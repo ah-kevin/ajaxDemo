@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <script src="ajax.js"></script>
+    <script>
+        function get_city(city){
+            var xhr=getXhr();
+            xhr.onreadystatechange= function () {
+                //获取返回的区域信息,加载到s2中
+              if(xhr.readyState==4&&xhr.status==200){
+                  var info=xhr.responseText;
+                  //拆分出每一组area
+                  var as =info.split(";");
+                  //情况原有信息
+                  $("s2").innerHTML=" ";
+                  //遍历每一组区域信息
+                  for (i=0;i<as.length;i++) {
+                      //s:海锭,hd
+                      var s =as[i];
+                      var ss = s.split(",");
+                      //ss[0]:海锭
+                      //ss[1]:hd
+                      //创建选项下啦选项
+                      var newOption=new Option(ss[0],ss[1]);
+                      //添加选项到s2中
+                      $("s2").options[i]=newOption;
+                  }
+              }
+            };
+            xhr.open("get","getArea.do?cityName="+city,true)
+            xhr.send(null);
+        }
+    </script>
+</head>
+<body>
+    城市:
+        <select id="s1" onchange="get_city(this.value)">
+            <option value="bj">北京</option>
+            <option value="sh">上海</option>
+            <option value="ah">安徽</option>
+        </select><br>
+    区域:
+    <select id="s2">
+    </select><br>
+</body>
+</html>

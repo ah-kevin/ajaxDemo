@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>post请求ajax</title>
+    <script>
+        <!--创建ajax对象-->
+        function getXhr() {
+            var xhr = null;
+            if (window.XMLHttpRequest) {
+                xhr = new XMLHttpRequest();
+            } else {
+                xhr = new ActiveXObject('Microsoft.XMLHttp')
+            }
+            return xhr;
+        }
+        //        发送psot请求
+        function postText() {
+            var xhr = getXhr();
+            xhr.open('post', 'postInfo.do', true)
+            //post多一步
+            xhr.setRequestHeader('content-type', 'application/x-www-form-urlencoded');
+            //回调函数
+            xhr.onreadystatechange= function () {
+                if (xhr.readyState==4&&xhr.status==200) {
+                    alert(xhr.responseText);
+                }
+            };
+            xhr.send("uname=dr");
+        }
+    </script>
+</head>
+<body>
+<input type="button" value="post提交数据" onclick="postText()"/>
+</body>
+</html>
