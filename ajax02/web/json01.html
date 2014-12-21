@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <script>
+        function getXhr() {
+            var xhr = null;
+            if (window.XMLHttpRequest) {
+                xhr = new XMLHttpRequest();
+            } else {
+                xhr = new ActiveXObject('Microsoft.XMLHttp')
+            }
+            return xhr;
+        }
+        function get_info() {
+            var xhr =getXhr();
+            xhr.onreadystatechange= function () {
+                if (xhr.readyState==4&&xhr.status==200) {
+                    //获取显示
+                    var result =xhr.responseText;
+                    //转换成js对象
+                    var obj =JSON.parse(result);
+                    var domObj =document.getElementById("s1");
+                    domObj.innerHTML="姓名:"+obj.name+"<br>年龄:"+obj.age;
+                }
+            };
+            xhr.open('get','getObj.do',true);
+            xhr.send(null);
+        }
+    </script>
+</head>
+<body>
+<input type="button" value="获取对象信息" onclick="get_info()"/><br>
+<h1 id="s1"></h1>
+</body>
+</html>

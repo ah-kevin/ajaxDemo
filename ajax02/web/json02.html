@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <script>
+        function getXhr() {
+            var xhr = null;
+            if (window.XMLHttpRequest) {
+                xhr = new XMLHttpRequest();
+            } else {
+                xhr = new ActiveXObject('Microsoft.XMLHttp')
+            }
+            return xhr;
+        }
+        //发异步请求,根据用户选中的城市 加载区域信息
+        function get_city(cv){
+            var xhr =getXhr();
+            xhr.onreadystatechange= function () {
+                if(xhr.readyState==4&&xhr.status==200){
+                    //获取返回值
+                    var result =xhr.responseText;
+                    //将json字符串转换为js数组
+                    var cityArr =JSON.parse(result);
+                    //将城市区域信息变成option项加载到s2下拉框中
+                    for(i=0;i<cityArr.length;i++){
+                        var aObj=cityArr[i];
+                        var op=new Option(aObj.name,aObj.value);
+                        console.log(op);
+                        document.getElementById("s2").options[i]=op;
+                    }
+                }
+            };
+            xhr.open("get","getCity.do?cName="+cv,true);
+            xhr.send(null);
+        }
+    </script>
+</head>
+<body>
+城市:
+<select id="s1" onchange="get_city(this.value)">
+    <option value="bj">北京</option>
+    <option value="sh">上海</option>
+</select><br>
+区域:
+<select id="s2"></select>
+</body>
+</html>
